@@ -33,3 +33,40 @@ var (
 const (
 	INFO_CACHE_DISABLED = "cache disabled"
 )
+
+// code alphabets
+const (
+	CODE_ALPHABET_SHORT = "abcdef0123456789"
+	CODE_ALPHABET_LONG  = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+)
+
+// error messages
+const (
+	INVALID_PASSWORD                = "incorrect password"
+	INVALID_USER_ID                 = "invalid userId"
+	ERROR_USER_IDS_NOT_FOUND        = "userIds not found"
+	INVALID_REQUEST                 = "invalid json request body"
+	INVALID_MAIL_ID                 = "invalid email address provided"
+	ERROR_IN_HASHING_PASSWORD       = "error while hashing password"
+	ERROR_IN_STORING_UNIQUE_USER    = "the user already exists"
+)
+
+const (
+	MIN_LENGTH_OF_FIRSTNAME = 2
+	MAX_LENGTH_OF_FIRSTNAME = 50
+	MIN_LENGTH_OF_LASTNAME = 2
+	MAX_LENGTH_OF_LASTNAME = 50
+	MIN_LENGTH_OF_PASSWORD = 6
+	MAX_LENGTH_OF_PASSWORD = 100
+)
+
+// response messages
+const (
+	CREATE_USER_MESSAGE    = "User Created Successfully"
+)
+
+// required request body fields
+var (
+	USER_REGISTER_REQUIRED_FIELDS = []string{"firstName", "lastName", "password", "email", "mobileNo"}
+	USER_REGISTER_OPTIONAL_FIELDS = []string{"gender"}
+)
