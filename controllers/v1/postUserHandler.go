@@ -119,7 +119,7 @@ func FetchUserHandler(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, util.StructToJSON(userRes))
 	} else {
-		err := errors.New(constants.ERROR_NO_BLOG_EXIST)
+		err := errors.New(constants.ERROR_NO_USER_EXIST)
 		c.JSON(http.StatusBadRequest, util.SendErrorResponse(err))
 		return
 	}

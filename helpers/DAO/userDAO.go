@@ -1,11 +1,16 @@
 package DAO
 
 import (
+	"context"
+	"database/sql"
 	"errors"
+	"fmt"
 	"log"
+	"strings"
 
 	"github.com/saiprasaddash07/users-service/constants"
 	"github.com/saiprasaddash07/users-service/helpers/request"
+	"github.com/saiprasaddash07/users-service/helpers/response"
 	"github.com/saiprasaddash07/users-service/services/db"
 )
 
@@ -58,4 +63,47 @@ func DeleteUser(user *request.User) error {
 		return err
 	}
 	return nil
+}
+
+func GetUser(ctx context.Context, column string, args []interface{}, size int, nextToken int) ([]response.User, error) {
+	var users []response.User
+
+	query := fmt.Sprintf(` SELECT userId, firstName, lastName, email, mobileNo, gender FROM users WHERE %s IN (?`+strings.Repeat(",?", len(args)-1)+")", column)
+	if size > 0 {
+		query = fmt.Sprintf("%s LIMIT %d", query, size)
+	}
+	if nextToken > 0 {
+		query = fmt.Sprintf("%s OFFSET %d", query, nextToken)
+	}
+
+	rows, err := db.GetClient(constants.DB_WRITER).QueryContext(ctx, query, args...)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return users, nil
+		}
+		return users, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var user response.User
+
+		err := rows.Scan(
+			&user.UserId,
+			&user.FirstName,
+			&user.LastName,
+			&user.Email,
+			&user.MobileNo,
+			&user.Gender,
+		)
+
+		if err != nil {
+			return users, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
 }

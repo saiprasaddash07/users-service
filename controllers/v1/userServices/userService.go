@@ -1,6 +1,7 @@
 package userServices
 
 import (
+	"context"
 	"errors"
 	"strings"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/saiprasaddash07/users-service/controllers/v1/utils"
 	"github.com/saiprasaddash07/users-service/helpers/DAO"
 	"github.com/saiprasaddash07/users-service/helpers/request"
+	"github.com/saiprasaddash07/users-service/helpers/response"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -54,6 +56,10 @@ func DeleteUser(user *request.User) error {
 	return nil
 }
 
-func FetchUser(user *request.User) (*request.User, error) {
-	return user, nil
+func GetUser(ctx context.Context, args []interface{}, column string, size int, nextToken int) ([]response.User, error) {
+	ddBlog, err := DAO.GetUser(ctx, column, args, size, nextToken)
+	if err != nil {
+		return nil, err
+	}
+	return ddBlog, nil
 }

@@ -51,6 +51,7 @@ const (
 	ERROR_IN_STORING_UNIQUE_USER = "the user already exists"
 	ERROR_IN_AUTHENTICATING_USER = "the password is incorrect"
 	USER_ID_NOT_ARRAY_OF_INT     = "userIds must be an array of integers"
+	ERROR_NO_USER_EXIST          = "User does not exist"
 )
 
 const (
