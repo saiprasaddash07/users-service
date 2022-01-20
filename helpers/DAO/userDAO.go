@@ -42,3 +42,20 @@ func UpdateUser(user *request.User) error {
 	}
 	return nil
 }
+
+func GetPassword(user *request.User) (string, error) {
+	var password string
+	err := db.GetClient(constants.DB_READER).QueryRow("SELECT password FROM users WHERE userId=?;", user.UserId).Scan(&password)
+	if err != nil {
+		return "", err
+	}
+	return password, nil
+}
+
+func DeleteUser(user *request.User) error {
+	_, err := db.GetClient(constants.DB_WRITER).Exec("UPDATE users SET isDeleted=? WHERE userId=?;", "true", user.UserId)
+	if err != nil {
+		return err
+	}
+	return nil
+}

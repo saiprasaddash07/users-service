@@ -49,6 +49,8 @@ const (
 	INVALID_MAIL_ID              = "invalid email address provided"
 	ERROR_IN_HASHING_PASSWORD    = "error while hashing password"
 	ERROR_IN_STORING_UNIQUE_USER = "the user already exists"
+	ERROR_IN_AUTHENTICATING_USER = "the password is incorrect"
+	USER_ID_NOT_ARRAY_OF_INT     = "userIds must be an array of integers"
 )
 
 const (
@@ -63,7 +65,9 @@ const (
 // response messages
 const (
 	CREATE_USER_MESSAGE = "User Created Successfully"
-	EDIT_USER_MESSAGE = "Name Updated Successfully"
+	EDIT_USER_MESSAGE   = "Name Updated Successfully"
+	DELETE_USER_MESSAGE = "User Deleted Successfully"
+	FETCH_USER_MESSAGE  = "User Fetched Successfully"
 )
 
 // required request body fields
@@ -73,9 +77,13 @@ var (
 
 	USER_EDIT_REQUIRED_FIELDS = []string{"firstName", "lastName"}
 	USER_EDIT_OPTIONAL_FIELDS = []string{}
+
+	USER_DELETE_REQUIRED_FIELDS = []string{"password"}
+	USER_DELETE_OPTIONAL_FIELDS = []string{}
 )
 
 const (
 	API_TYPE_CREATE_USER = "createUser"
 	API_TYPE_EDIT_USER   = "editUser"
+	API_TYPE_DELETE_USER = "deleteUser"
 )

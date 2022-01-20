@@ -33,7 +33,7 @@ func GetRequestBodyUser(apiType string, registerRequiredFields []string, registe
 			return
 		}
 
-		if apiType == constants.API_TYPE_EDIT_USER {
+		if apiType == constants.API_TYPE_EDIT_USER || apiType == constants.API_TYPE_DELETE_USER {
 			userId, err := strconv.ParseInt(context.Query("userId"), 10, 64)
 			if err != nil {
 				context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/saiprasaddash07/users-service/constants"
+	"github.com/saiprasaddash07/users-service/controllers/v1/utils"
 	"github.com/saiprasaddash07/users-service/helpers/DAO"
 	"github.com/saiprasaddash07/users-service/helpers/request"
 	"golang.org/x/crypto/bcrypt"
@@ -33,5 +34,26 @@ func UpdateUser(user *request.User) (*request.User, error) {
 	if err := DAO.UpdateUser(user); err != nil {
 		return nil, err
 	}
+	return user, nil
+}
+
+func DeleteUser(user *request.User) error {
+	password, err := DAO.GetPassword(user)
+	if err != nil {
+		return err
+	}
+
+	if err := utils.Authenticate(password, user.Password); err != nil {
+		return errors.New(constants.ERROR_IN_AUTHENTICATING_USER)
+	}
+
+	if err := DAO.DeleteUser(user); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func FetchUser(user *request.User) (*request.User, error) {
 	return user, nil
 }

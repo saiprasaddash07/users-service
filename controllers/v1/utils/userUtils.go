@@ -3,10 +3,12 @@ package utils
 import (
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/saiprasaddash07/users-service/constants"
 	"github.com/saiprasaddash07/users-service/helpers/request"
 	"github.com/saiprasaddash07/users-service/helpers/util"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ValidateAndParseUserFields(userJSON map[string]interface{}, requiredFields []string, optionalFields []string) (*request.User, bool) {
@@ -106,7 +108,19 @@ func ValidateUserDetails(user *request.User, apiType string) error {
 		if len(user.LastName) < constants.MIN_LENGTH_OF_LASTNAME || len(user.LastName) > constants.MAX_LENGTH_OF_LASTNAME {
 			return errors.New(constants.INVALID_REQUEST)
 		}
+	} else if apiType == constants.API_TYPE_DELETE_USER {
+		if len(user.Password) < constants.MIN_LENGTH_OF_PASSWORD || len(user.Password) > constants.MAX_LENGTH_OF_PASSWORD {
+			return errors.New(constants.INVALID_REQUEST)
+		}
 	}
 
+	return nil
+}
+
+func Authenticate(password string, enteredPassword string) error {
+	if err := bcrypt.CompareHashAndPassword([]byte(password), []byte(enteredPassword)); err != nil {
+		log.Println("password hashes are not same")
+		return errors.New(constants.INVALID_PASSWORD)
+	}
 	return nil
 }
