@@ -1,7 +1,9 @@
 package middlewares
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/saiprasaddash07/users-service/constants"
@@ -31,7 +33,20 @@ func GetRequestBodyUser(apiType string, registerRequiredFields []string, registe
 			return
 		}
 
-		if err := utils.ValidateUserDetails(user); err != nil {
+		if apiType == constants.API_TYPE_EDIT_USER {
+			userId, err := strconv.ParseInt(context.Query("userId"), 10, 64)
+			if err != nil {
+				context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+					"status":  constants.API_FAILED_STATUS,
+					"message": constants.INVALID_USER_ID,
+				})
+				return
+			}
+			log.Println("userId:", userId)
+			user.UserId = userId
+		}
+
+		if err := utils.ValidateUserDetails(user, apiType); err != nil {
 			context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 				"status":  constants.API_FAILED_STATUS,
 				"message": err.Error(),

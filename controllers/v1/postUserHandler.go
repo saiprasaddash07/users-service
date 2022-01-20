@@ -13,7 +13,7 @@ import (
 	"github.com/saiprasaddash07/users-service/helpers/util"
 )
 
-func Register(c *gin.Context) {
+func RegisterUserHandler(c *gin.Context) {
 	userFromContext, ok := c.Get("user")
 	if !ok {
 		c.JSON(http.StatusBadRequest, util.SendErrorResponse(errors.New(constants.INVALID_REQUEST)))
@@ -21,7 +21,7 @@ func Register(c *gin.Context) {
 	}
 	user := userFromContext.(*request.User)
 
-	if err := utils.ValidateUserDetails(user); err != nil {
+	if err := utils.ValidateUserDetails(user, constants.API_TYPE_CREATE_USER); err != nil {
 		c.JSON(http.StatusBadRequest, util.SendErrorResponse(err))
 		return
 	}
@@ -35,6 +35,34 @@ func Register(c *gin.Context) {
 	res := response.Response{
 		Status:  constants.API_SUCCESS_STATUS,
 		Message: constants.CREATE_USER_MESSAGE,
+	}
+	c.JSON(http.StatusOK, util.StructToJSON(res))
+}
+
+func EditUserHandler(c *gin.Context) {
+	userFromContext, ok := c.Get("user")
+	if !ok {
+		c.JSON(http.StatusBadRequest, util.SendErrorResponse(errors.New(constants.INVALID_REQUEST)))
+		return
+	}
+	user := userFromContext.(*request.User)
+
+	userRes, err := userServices.UpdateUser(user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, util.SendErrorResponse(err))
+		return
+	}
+
+	createResponse := &response.UserEdit{
+		UserId:      userRes.UserId,
+		FirstName:   userRes.FirstName,
+		LastName:    userRes.LastName,
+	}
+
+	res := response.Response{
+		Status:  constants.API_SUCCESS_STATUS,
+		Message: constants.EDIT_USER_MESSAGE,
+		Result:  createResponse,
 	}
 	c.JSON(http.StatusOK, util.StructToJSON(res))
 }

@@ -2,6 +2,7 @@ package DAO
 
 import (
 	"errors"
+	"log"
 
 	"github.com/saiprasaddash07/users-service/constants"
 	"github.com/saiprasaddash07/users-service/helpers/request"
@@ -31,4 +32,13 @@ func DoesUserExist(user *request.User) error {
 		return nil
 	}
 	return errors.New(constants.ERROR_IN_STORING_UNIQUE_USER)
+}
+
+func UpdateUser(user *request.User) error {
+	log.Println(user.UserId, user.LastName)
+	_, err := db.GetClient(constants.DB_WRITER).Exec("UPDATE users SET firstName=?, lastName=? WHERE userId=?;", user.FirstName, user.LastName, user.UserId)
+	if err != nil {
+		return err
+	}
+	return nil
 }

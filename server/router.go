@@ -15,7 +15,8 @@ func NewRouter() *gin.Engine {
 	{
 		userGroupV1 := version1.Group("user")
 		{
-			userGroupV1.POST("/register", middlewares.GetRequestBodyUser(constants.HTTP_METHOD_POST, constants.USER_REGISTER_REQUIRED_FIELDS, constants.USER_REGISTER_OPTIONAL_FIELDS), v1.Register)
+			userGroupV1.POST("/register", middlewares.GetRequestBodyUser(constants.API_TYPE_CREATE_USER, constants.USER_REGISTER_REQUIRED_FIELDS, constants.USER_REGISTER_OPTIONAL_FIELDS), v1.RegisterUserHandler)
+			userGroupV1.POST("/edit", middlewares.GetRequestBodyUser(constants.API_TYPE_EDIT_USER, constants.USER_EDIT_REQUIRED_FIELDS, constants.USER_EDIT_OPTIONAL_FIELDS), v1.EditUserHandler)
 		}
 	}
 

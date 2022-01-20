@@ -28,3 +28,10 @@ func CreateUser(user *request.User) (*request.User, error) {
 
 	return user, nil
 }
+
+func UpdateUser(user *request.User) (*request.User, error) {
+	if err := DAO.UpdateUser(user); err != nil {
+		return nil, err
+	}
+	return user, nil
+}

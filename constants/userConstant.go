@@ -42,31 +42,40 @@ const (
 
 // error messages
 const (
-	INVALID_PASSWORD                = "incorrect password"
-	INVALID_USER_ID                 = "invalid userId"
-	ERROR_USER_IDS_NOT_FOUND        = "userIds not found"
-	INVALID_REQUEST                 = "invalid json request body"
-	INVALID_MAIL_ID                 = "invalid email address provided"
-	ERROR_IN_HASHING_PASSWORD       = "error while hashing password"
-	ERROR_IN_STORING_UNIQUE_USER    = "the user already exists"
+	INVALID_PASSWORD             = "incorrect password"
+	INVALID_USER_ID              = "invalid userId"
+	ERROR_USER_IDS_NOT_FOUND     = "userIds not found"
+	INVALID_REQUEST              = "invalid json request body"
+	INVALID_MAIL_ID              = "invalid email address provided"
+	ERROR_IN_HASHING_PASSWORD    = "error while hashing password"
+	ERROR_IN_STORING_UNIQUE_USER = "the user already exists"
 )
 
 const (
 	MIN_LENGTH_OF_FIRSTNAME = 2
 	MAX_LENGTH_OF_FIRSTNAME = 50
-	MIN_LENGTH_OF_LASTNAME = 2
-	MAX_LENGTH_OF_LASTNAME = 50
-	MIN_LENGTH_OF_PASSWORD = 6
-	MAX_LENGTH_OF_PASSWORD = 100
+	MIN_LENGTH_OF_LASTNAME  = 2
+	MAX_LENGTH_OF_LASTNAME  = 50
+	MIN_LENGTH_OF_PASSWORD  = 6
+	MAX_LENGTH_OF_PASSWORD  = 100
 )
 
 // response messages
 const (
-	CREATE_USER_MESSAGE    = "User Created Successfully"
+	CREATE_USER_MESSAGE = "User Created Successfully"
+	EDIT_USER_MESSAGE = "Name Updated Successfully"
 )
 
 // required request body fields
 var (
 	USER_REGISTER_REQUIRED_FIELDS = []string{"firstName", "lastName", "password", "email", "mobileNo"}
 	USER_REGISTER_OPTIONAL_FIELDS = []string{"gender"}
+
+	USER_EDIT_REQUIRED_FIELDS = []string{"firstName", "lastName"}
+	USER_EDIT_OPTIONAL_FIELDS = []string{}
+)
+
+const (
+	API_TYPE_CREATE_USER = "createUser"
+	API_TYPE_EDIT_USER   = "editUser"
 )

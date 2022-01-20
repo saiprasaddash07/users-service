@@ -72,30 +72,40 @@ func ValidateAndParseUserFields(userJSON map[string]interface{}, requiredFields 
 	return nil, false
 }
 
-func ValidateUserDetails(user *request.User) error {
-	if len(user.FirstName) < constants.MIN_LENGTH_OF_FIRSTNAME || len(user.FirstName) > constants.MAX_LENGTH_OF_FIRSTNAME {
-		return errors.New(constants.INVALID_REQUEST)
-	}
+func ValidateUserDetails(user *request.User, apiType string) error {
+	if apiType == constants.API_TYPE_CREATE_USER {
+		if len(user.FirstName) < constants.MIN_LENGTH_OF_FIRSTNAME || len(user.FirstName) > constants.MAX_LENGTH_OF_FIRSTNAME {
+			return errors.New(constants.INVALID_REQUEST)
+		}
 
-	if len(user.LastName) < constants.MIN_LENGTH_OF_LASTNAME || len(user.LastName) > constants.MAX_LENGTH_OF_LASTNAME {
-		return errors.New(constants.INVALID_REQUEST)
-	}
+		if len(user.LastName) < constants.MIN_LENGTH_OF_LASTNAME || len(user.LastName) > constants.MAX_LENGTH_OF_LASTNAME {
+			return errors.New(constants.INVALID_REQUEST)
+		}
 
-	if len(user.Email) == 0 {
-		return errors.New(constants.INVALID_REQUEST)
-	}
-	email, ok := util.ValidEmail(user.Email)
-	if !ok {
-		return errors.New(constants.INVALID_MAIL_ID)
-	}
-	user.Email = email
+		if len(user.Email) == 0 {
+			return errors.New(constants.INVALID_REQUEST)
+		}
+		email, ok := util.ValidEmail(user.Email)
+		if !ok {
+			return errors.New(constants.INVALID_MAIL_ID)
+		}
+		user.Email = email
 
-	if len(user.Password) < constants.MIN_LENGTH_OF_PASSWORD || len(user.Password) > constants.MAX_LENGTH_OF_PASSWORD {
-		return errors.New(constants.INVALID_REQUEST)
-	}
+		if len(user.Password) < constants.MIN_LENGTH_OF_PASSWORD || len(user.Password) > constants.MAX_LENGTH_OF_PASSWORD {
+			return errors.New(constants.INVALID_REQUEST)
+		}
 
-	if len(user.MobileNo) != 10 {
-		return errors.New(constants.INVALID_REQUEST)
+		if len(user.MobileNo) != 10 {
+			return errors.New(constants.INVALID_REQUEST)
+		}
+	} else if apiType == constants.API_TYPE_EDIT_USER {
+		if len(user.FirstName) < constants.MIN_LENGTH_OF_FIRSTNAME || len(user.FirstName) > constants.MAX_LENGTH_OF_FIRSTNAME {
+			return errors.New(constants.INVALID_REQUEST)
+		}
+
+		if len(user.LastName) < constants.MIN_LENGTH_OF_LASTNAME || len(user.LastName) > constants.MAX_LENGTH_OF_LASTNAME {
+			return errors.New(constants.INVALID_REQUEST)
+		}
 	}
 
 	return nil
